@@ -1,0 +1,153 @@
+{
+  "id": "a1dde0d3-0942-42ee-8462-ed81d7681761",
+  "name": "Authorization",
+  "description": null,
+  "auth": null,
+  "events": null,
+  "variables": [],
+  "order": [
+    "50483668-8725-4a03-bcdb-f50afd59da8c",
+    "0a68e28d-61db-4e4a-a364-8256ba97251a"
+  ],
+  "folders_order": [],
+  "folders": [],
+  "requests": [
+    {
+      "id": "0a68e28d-61db-4e4a-a364-8256ba97251a",
+      "name": "Check Token",
+      "url": "{{rest-house-auth-server}}\/oauth\/check_token?token={{authorization-token}}",
+      "description": "",
+      "data": null,
+      "dataMode": null,
+      "headerData": null,
+      "method": "POST",
+      "pathVariableData": [],
+      "queryParams": [
+        {
+          "key": "token",
+          "value": "{{authorization-token}}",
+          "equals": true,
+          "description": "",
+          "enabled": true
+        }
+      ],
+      "auth": {
+        "type": "basic",
+        "basic": [
+          {
+            "key": "password",
+            "value": "RestHouseClientSecret"
+          },
+          {
+            "key": "username",
+            "value": "RestHouseClientId"
+          }
+        ]
+      },
+      "events": null,
+      "folder": null,
+      "currentHelper": "basicAuth",
+      "helperAttributes": {
+        "id": "basic",
+        "username": "RestHouseClientId",
+        "password": "RestHouseClientSecret"
+      },
+      "collectionId": "a1dde0d3-0942-42ee-8462-ed81d7681761",
+      "pathVariables": []
+    },
+    {
+      "id": "50483668-8725-4a03-bcdb-f50afd59da8c",
+      "name": "Generate Token",
+      "url": "{{rest-house-auth-server}}\/oauth\/token?grant_type=password&password=admin&username=admin&client_id=RestHouseClientId&resource_id=RestHouseResourceApiId",
+      "description": null,
+      "data": [],
+      "dataMode": "raw",
+      "headerData": [
+        {
+          "key": "Accept",
+          "value": "application\/json;charset=UTF-8",
+          "type": "text",
+          "enabled": true
+        }
+      ],
+      "method": "POST",
+      "pathVariableData": [],
+      "queryParams": [
+        {
+          "key": "grant_type",
+          "value": "password",
+          "equals": true,
+          "description": "",
+          "enabled": true
+        },
+        {
+          "key": "password",
+          "value": "admin",
+          "equals": true,
+          "description": "",
+          "enabled": true
+        },
+        {
+          "key": "username",
+          "value": "admin",
+          "equals": true,
+          "description": "",
+          "enabled": true
+        },
+        {
+          "key": "client_id",
+          "value": "RestHouseClientId",
+          "equals": true,
+          "description": "",
+          "enabled": true
+        },
+        {
+          "key": "resource_id",
+          "value": "RestHouseResourceApiId",
+          "equals": true,
+          "description": "",
+          "enabled": true
+        }
+      ],
+      "auth": {
+        "type": "basic",
+        "basic": [
+          {
+            "key": "password",
+            "value": "RestHouseClientSecret"
+          },
+          {
+            "key": "username",
+            "value": "RestHouseClientId"
+          }
+        ]
+      },
+      "events": [
+        {
+          "listen": "test",
+          "script": {
+            "id": "243f1b51-2655-49b8-8bc8-6823fb214652",
+            "exec": [
+              "let response = JSON.parse(responseBody);",
+              "postman.setEnvironmentVariable(\"authorization-token\", response.access_token);"
+            ],
+            "type": "text\/javascript"
+          }
+        }
+      ],
+      "folder": null,
+      "preRequestScript": null,
+      "tests": "let response = JSON.parse(responseBody);\npostman.setEnvironmentVariable(\"authorization-token\", response.access_token);",
+      "currentHelper": "basicAuth",
+      "helperAttributes": {
+        "id": "basic",
+        "username": "RestHouseClientId",
+        "password": "RestHouseClientSecret"
+      },
+      "collectionId": "a1dde0d3-0942-42ee-8462-ed81d7681761",
+      "rawModeData": "",
+      "headers": "Accept: application\/json;charset=UTF-8\n",
+      "pathVariables": []
+    }
+  ]
+}

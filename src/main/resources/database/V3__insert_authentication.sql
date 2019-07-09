@@ -1,0 +1,4 @@
+INSERT INTO OAUTH_CLIENT_DETAILS(CLIENT_ID, RESOURCE_IDS, CLIENT_SECRET, SCOPE, AUTHORIZED_GRANT_TYPES, AUTHORITIES, ACCESS_TOKEN_VALIDITY, REFRESH_TOKEN_VALIDITY)
+	VALUES ('RestHouseClientId', 'RestHouseProductApi,RestHouseCustomerApi,RestHouseOutcomeApi',
+	'$2a$08$NIDEAOr.WgE65b91qm0kyuzz5UHop3N8YIa/O.Cx7yIF0vL0XFDmu',
+	'read,write', 'password,authorization_code,refresh_token', 'USER', 10800, 2592000);

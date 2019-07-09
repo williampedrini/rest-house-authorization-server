@@ -1,0 +1,13 @@
+apply plugin: 'docker-compose'
+
+dockerCompose {
+    useComposeFiles = ['environment/development/docker-compose.yml']
+    isRequiredBy(project.tasks.bootRun)
+}
+
+bootRun {
+    environment 'AUTH_DATASOURCE_URL', project.property('environment.development.datasourceUrl')
+    environment 'AUTH_DATASOURCE_USERNAME', project.property('environment.development.datasourceUsername')
+    environment 'AUTH_DATASOURCE_PASSWORD', project.property('environment.development.datasourcePassword')
+    environment 'AUTH_FLYWAY_SCRIPT_LOCATION', project.property('environment.development.flywayScriptLocation')
+}

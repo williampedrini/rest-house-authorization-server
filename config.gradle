@@ -1,0 +1,50 @@
+if (isDevelopment()) {
+    apply from: getEnvironmentFile(project.property('environment.development.name'))
+}
+
+/**
+ * Verifies whether the environment is development.
+ * @return True if equals.
+ */
+def isDevelopment() {
+
+    isEnvironment(project.property('environment.development.name'))
+}
+
+/**
+ * Verifies whether the environment system property matches a specific environment name.
+ * @param name The name of the environment to use as base for comparision.
+ * @return True if matches.
+ */
+def isEnvironment(name) {
+
+    project.hasProperty('environment') && project.property('environment') == name
+}
+
+/**
+ * Get the environment configuration file, based on the current environment.
+ * @param environment The current environment.
+ * @return The found file path.
+ */
+def getEnvironmentFile(environment) {
+
+    logger.quiet('Datasource Username: {}', getEnvironmentProperty('environment.%s.datasourceUsername', environment))
+    logger.quiet('Datasource Password: {}', getEnvironmentProperty('environment.%s.datasourcePassword', environment))
+    logger.quiet('Datasource Url: {}', getEnvironmentProperty('environment.%s.datasourceUrl', environment))
+    logger.quiet('Flyway Script Location: {}', getEnvironmentProperty('environment.%s.flywayScriptLocation', environment))
+
+    String.format('%s/%s/config.gradle', project.property('environment.configuration.folder'), environment)
+}
+
+/**
+ * Get the property value based on a property template and the current environment.
+ * @param propertyTemplate The property template used to search for the value.
+ * @param environment The current environment defined as System property.
+ * @return The found value.
+ */
+def getEnvironmentProperty(propertyTemplate, environment) {
+
+    def property = String.format(propertyTemplate, environment)
+
+    project.hasProperty(property) ? project.property(property) : ''
+}

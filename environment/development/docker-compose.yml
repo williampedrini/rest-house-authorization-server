@@ -1,0 +1,13 @@
+version: '3'
+
+services:
+  authorization-database:
+    image: postgres:latest
+    container_name: authorization-database
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: rest-house
+      POSTGRES_USER: rest-house
+      POSTGRES_DB: rest-house-authorization
+    ports:
+      - "5432:5432"
