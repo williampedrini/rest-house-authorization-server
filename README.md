@@ -57,6 +57,20 @@ To run the API execute the following command:
  gradle -Penvironment=development bootRun
 ```
 
+## Publishing Images to Docker Hub
+
+1. Log in into docker using the following command:
+
+    ```
+    docker login
+    ```
+
+2. Publish the new Image using the following command:
+
+    ```
+    gradle dockerPush
+    ```
+
 ## Running Tests
 
 1) Import the Postman [local](postman/local.environment.json) environment.
