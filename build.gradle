@@ -33,9 +33,9 @@ compileJava {
 springBoot {
     buildInfo {
         properties {
-            artifact = 'rest-house-authorization-api'
+            artifact = 'rest-house-authorization-server'
             version = '1.0.0-SNAPSHOT'
-            group = 'com.custodio.resthouse.authorization.api'
+            group = 'com.custodio.resthouse'
             name = 'Rest House Authorization API'
         }
     }
