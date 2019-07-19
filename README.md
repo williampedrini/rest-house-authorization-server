@@ -25,7 +25,7 @@ Install the tool for managing parallel versions of multiple Software Development
 Execute the following command:
 
 ```
-sdk install java 12.0.1-sapmchn
+sdk install java 12.0.2-sapmchn
 ```
 
 ##### GRADLE
