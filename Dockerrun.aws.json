@@ -1,0 +1,35 @@
+{
+  "AWSEBDockerrunVersion": 2,
+  "containerDefinitions": [
+    {
+      "name": "rest-house-authorization-server",
+      "image": "williamcustodio/rest-house-authorization-server:latest",
+      "environment": [
+        {
+          "name": "AUTH_DATASOURCE_URL",
+          "value": ""
+        },
+        {
+          "name": "AUTH_DATASOURCE_USERNAME",
+          "value": ""
+        },
+        {
+          "name": "AUTH_DATASOURCE_PASSWORD",
+          "value": ""
+        },
+        {
+          "name": "AUTH_FLYWAY_SCRIPT_LOCATION",
+          "value": "classpath:database"
+        }
+      ],
+      "essential": true,
+      "memory": 256,
+      "portMappings": [
+        {
+          "hostPort": 80,
+          "containerPort": 8080
+        }
+      ]
+    }
+  ]
+}
