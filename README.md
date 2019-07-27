@@ -1,6 +1,6 @@
 # Rest House API
 
-This project contains the representation of a authorization server, responsible for generating tokens, managing users and also their authorities.
+This project contains the representation of an authorization server, responsible for generating tokens, managing users and also their authorities.
 
 ## Getting Started
 
