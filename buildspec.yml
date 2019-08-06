@@ -1,0 +1,20 @@
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      java: openjdk11
+    commands:
+      - echo ### install gradle ###
+      - apt-get update -y
+      - apt-get install -y software-properties-common
+      - which add-apt-repository
+      - add-apt-repository ppa:cwchien/gradle
+      - apt-get update -y
+      - apt-get install -y gradle
+  build:
+    commands:
+      - echo ##### build project ####
+      - gradle clean build
+      - ls -l
+      - ls build/libs -l
