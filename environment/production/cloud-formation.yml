@@ -1,0 +1,75 @@
+AWSTemplateFormatVersion: "2010-09-09"
+
+Description: Cloud formation template for a Rest House Authorization Server Instance.
+
+Parameters:
+  InstanceTypeParameter:
+    Type: String
+    Default: t2.micro
+    AllowedValues:
+      - t2.micro
+    Description: Enter the instance type. Default is t2.micro.
+
+  SecurityGroupTerminalIngressParameter:
+    Type: String
+    Default: 193.16.224.7/32
+    Description: Enter the IPs that will be allowed to access the instance terminal. Default is Internet from Home.
+
+  SecurityGroupApplicationIngressParameter:
+    Type: String
+    Default: 0.0.0.0/0
+    Description: Enter the IPs that will be allowed to access the application. Default is open for all IPs.
+
+  SecurityGroupApplicationIngressPortParameter:
+    Type: Number
+    Default: 80
+    Description: Enter port upon which the application will be accessed from. Default is 80.
+
+Resources:
+  RestHouseAuthorizationInstance:
+    Type: "AWS::EC2::Instance"
+    Properties:
+      ImageId: "ami-0ad37dbbe571ce2a1"
+      InstanceType: !Ref InstanceTypeParameter
+      SecurityGroupIds: [!Ref RestHouseAuthorizationSecurityGroup]
+      UserData:
+        Fn::Base64:
+          !Sub |
+          #!/bin/bash -xe
+
+          #Install and enable docker
+          curl -fsSL https://get.docker.com | bash
+          systemctl enable docker
+          systemctl start docker
+
+          #Install kubernetes dependencies.
+          apt-get update
+          apt-get install -y apt-transport-https
+          curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add -
+          echo "deb http://apt.kubernetes.io/ kubernetes-xenial main" > /etc/apt/sources.list.d/kubernetes.list
+          apt-get update
+          apt-get install -y kubelet kubeadm kubectl
+
+          #Elect instance as master
+          kubeadm init --apiserver-advertise-address $(hostname -i) --ignore-preflight-errors=NumCPU
+          mkdir -p $HOME/.kube
+          cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+          chown $(id -u):$(id -g) $HOME/.kube/config
+          kubectl apply -f "https://cloud.weave.works/k8s/net?k8s-version=$(kubectl version | base64 | tr -d '\n')"
+
+  RestHouseAuthorizationSecurityGroup:
+    Type: "AWS::EC2::SecurityGroup"
+    Properties:
+      GroupName: RestHouseAuthorizationSecurityGroup
+      GroupDescription: Security group specific for the rest house authorization server.
+      SecurityGroupIngress:
+        - CidrIp: !Ref SecurityGroupTerminalIngressParameter
+          FromPort: 22
+          Description: Access to instance terminal.
+          IpProtocol: TCP
+          ToPort: 22
+        - CidrIp: !Ref SecurityGroupApplicationIngressParameter
+          FromPort: !Ref SecurityGroupApplicationIngressPortParameter
+          Description: Access to instance application.
+          IpProtocol: TCP
+          ToPort: !Ref SecurityGroupApplicationIngressPortParameter
